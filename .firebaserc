@@ -1,1 +1,5 @@
-{}
+{
+  "projects": {
+    "production": "bin-buddy-900a4"
+  }
+}
