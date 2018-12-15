@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (MessageEvent, TextMessage, ImageMessage, TextSendMessage)
+from binbuddy import BinBuddy
 
 load_dotenv()
 
@@ -31,7 +32,20 @@ def handle_message(event):
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_image(event):
   message_content = line_bot_api.get_message_content(event.message.id)
+  binbuddy = BinBuddy(config={
+    "rekognition": {
+      "aws_access_key_id": os.getenv('AWS_ACCESS_KEY_ID'),
+      "aws_secret_access_key": os.getenv('AWS_SECRET_ACCESS_KEY'),
+      "region_name": os.getenv('REGION_NAME')
+    }
+  })
 
-  with open(image_path, 'wb') as fd:
-    for chunk in message_content.iter_content():
-        fd.write(chunk)
+  image = bytearray()
+  for chunk in message_content.iter_content():
+    image.extend(chunk)
+  
+  labels = binbuddy.which_bin_to_thrash(image)
+  line_bot_api.reply_message(
+    event.reply_token,
+    TextSendMessage(text=labels)
+  )

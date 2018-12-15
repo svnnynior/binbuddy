@@ -2,7 +2,6 @@ import boto3
 import glob
 import os
 
-from config import config as _config
 from metadata import bin_type_to_name_dict, name_to_bin_dict
 
 class BinBuddy:
