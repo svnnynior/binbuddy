@@ -32,7 +32,16 @@ class BinBuddy:
 
         return response['Labels']
 
-    def which_bin_to_thrash(self, image_byte):
+    def which_bin_to_thrash_word(self, word):
+
+        labels = self.detect_label_from_byte(image_byte)
+        detected_object = word
+        bin_type = bin_type_to_name_dict[name_to_bin_dict[detected_object]]
+        text = 'ตรวจพบ "{}" เป็นขยะประเภท "{}"'.format(detected_object, bin_type)
+
+        return text
+
+    def which_bin_to_thrash_image(self, image_byte):
 
         labels = self.detect_label_from_byte(image_byte)
         output_texts = list()
@@ -46,11 +55,11 @@ class BinBuddy:
             text = 'ตรวจพบ "{}" เป็นขยะประเภท "{}"'.format(detected_object, bin_type)
             output_texts.append(text)
 
-        return output_texts
+        return "\n".join(output_texts)
 
 if __name__ == "__main__":
     binbuddy = BinBuddy(config=_config)
-    with open('test-image/test.jpg', 'rb') as image:
+    with open('../test-image/test.jpg', 'rb') as image:
         labels = binbuddy.which_bin_to_thrash(image.read())
     print(labels)
 
