@@ -48,11 +48,14 @@ class BinBuddy:
             detected_object = label['Name']
             detected_object = detected_object.lower()
             try:
-                bin_type = bin_type_to_name_dict[name_to_bin_dict[detected_object]]
+                bin_type = name_to_bin_dict[detected_object]
+                bin_type_text = bin_type_to_name_dict[]
             except:
                 continue
-            text = 'ตรวจพบ "{}" เป็นขยะประเภท "{}"'.format(detected_object, bin_type)
-            output_texts.append(text)
+                
+            if bin_type > 0:
+                text = 'ตรวจพบ "{}" เป็นขยะประเภท "{}"'.format(detected_object, bin_type_text)
+                output_texts.append(text)
 
         return "\n".join(output_texts)
 
