@@ -2,7 +2,6 @@ import boto3
 import glob
 import os
 
-from config import config as _config
 from metadata import bin_type_to_name_dict, name_to_bin_dict
 
 class BinBuddy:
@@ -46,7 +45,7 @@ class BinBuddy:
             text = 'ตรวจพบ "{}" เป็นขยะประเภท "{}"'.format(detected_object, bin_type)
             output_texts.append(text)
 
-        return output_texts
+        return "\n".join(output_texts)
 
 if __name__ == "__main__":
     binbuddy = BinBuddy(config=_config)
